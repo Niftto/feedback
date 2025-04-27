@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spice War - Feedback</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff8f0;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 2rem;
+      max-width: 500px;
+      width: 100%;
+      border-radius: 14px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 1.5rem;
+      color: #b22222;
+    }
+
+    input, textarea {
+      width: 100%;
+      max-width: 100%;
+      padding: 0.75rem;
+      margin: 0 auto 1rem auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+      display: block;
+    }
+
+    button {
+      background-color: #b22222;
+      color: white;
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-bottom: 1rem;
+    }
+
+    button:hover {
+      background-color: #8b1a1a;
+    }
+
+    #response {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: green;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 1rem;
+      text-decoration: none;
+      color: white;
+      background-color: #b22222;
+      padding: 0.6rem 1.5rem;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+      background-color: #8b1a1a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Spice War Feedback</h2>
+    
+    <input type="text" id="name" placeholder="Your Name" />
+    <input type="text" id="dish" placeholder="Dish You Ordered" />
+    <textarea id="feedback" rows="3" placeholder="Your Feedback"></textarea>
+    <textarea id="suggestions" rows="3" placeholder="Suggestions (optional)"></textarea>
+
+    <button onclick="submitFeedback()">Submit Feedback</button>
+    <p id="response"></p>
+
+    <a href="main.html" class="back-button">Back to Home</a>
+  </div>
+
+  <script>
+    function submitFeedback() {
+      const name = document.getElementById("name").value;
+      const dish = document.getElementById("dish").value;
+      const feedback = document.getElementById("feedback").value;
+      const suggestions = document.getElementById("suggestions").value;
+
+      if (!name || !dish || !feedback) {
+        document.getElementById("response").innerText = "Please fill in your name, dish, and feedback.";
+        return;
+      }
+
+      fetch("https://script.google.com/macros/s/AKfycbxCFSynDLLPcsdwZThT2dfWhl0Jn0JbfZrrxEeQPlBVNo7WLl0JwUyvM1zHVuMj1BPqmw/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        mode: "no-cors",
+        body: JSON.stringify({
+          name: name,
+          dish: dish,
+          feedback: feedback,
+          suggestions: suggestions
+        })
+      })
+      .then(() => {
+        document.getElementById("response").innerText = "Thank you for sharing your feedback with Spice War!";
+        alert("We appreciate your feedback — thank you! 🍽️🔥");
+        document.getElementById("name").value = "";
+        document.getElementById("dish").value = "";
+        document.getElementById("feedback").value = "";
+        document.getElementById("suggestions").value = "";
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        document.getElementById("response").innerText = "Something went wrong. Please try again.";
+      });
+    }
+  </script>
+</body>
+</html>
